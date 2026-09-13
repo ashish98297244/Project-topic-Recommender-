@@ -1,0 +1,219 @@
+# AI Data Science - Project Topic Recommender
+# Beginner Friendly Project
+
+project_topics = [
+    {
+        "name": "AI Chatbot",
+        "interests": ["AI", "Python", "NLP"],
+        "skills": ["Python", "Machine Learning"],
+        "career": ["AI Engineer", "Data Scientist"],
+        "difficulty": "Medium",
+        "description": "Create an intelligent chatbot that can answer user questions."
+    },
+    {
+        "name": "Student Performance Prediction",
+        "interests": ["Data Science", "Education", "Machine Learning"],
+        "skills": ["Python", "Pandas", "Machine Learning"],
+        "career": ["Data Scientist", "ML Engineer"],
+        "difficulty": "Medium",
+        "description": "Predict student marks or performance using machine learning."
+    },
+    {
+        "name": "Fake News Detection",
+        "interests": ["AI", "NLP", "Data Science"],
+        "skills": ["Python", "Machine Learning", "NLP"],
+        "career": ["AI Engineer", "Data Scientist"],
+        "difficulty": "Hard",
+        "description": "Detect whether a news article is real or fake."
+    },
+    {
+        "name": "E-Commerce Sales Analysis",
+        "interests": ["Business", "Data Science", "Analytics"],
+        "skills": ["Python", "Pandas", "Data Visualization"],
+        "career": ["Data Analyst", "Data Scientist"],
+        "difficulty": "Easy",
+        "description": "Analyze sales data and find useful business insights."
+    },
+    {
+        "name": "Movie Recommendation System",
+        "interests": ["AI", "Movies", "Recommendation"],
+        "skills": ["Python", "Machine Learning"],
+        "career": ["AI Engineer", "ML Engineer"],
+        "difficulty": "Medium",
+        "description": "Recommend movies based on user preferences."
+    },
+    {
+        "name": "Weather Data Prediction",
+        "interests": ["Data Science", "Weather", "Prediction"],
+        "skills": ["Python", "Machine Learning", "Data Analysis"],
+        "career": ["Data Scientist", "ML Engineer"],
+        "difficulty": "Medium",
+        "description": "Analyze weather data and predict future conditions."
+    },
+    {
+        "name": "Face Recognition System",
+        "interests": ["AI", "Computer Vision", "Security"],
+        "skills": ["Python", "Computer Vision"],
+        "career": ["AI Engineer", "Computer Vision Engineer"],
+        "difficulty": "Hard",
+        "description": "Build a system that recognizes registered faces."
+    },
+    {
+        "name": "Personal Expense Analyzer",
+        "interests": ["Finance", "Data Science", "Analytics"],
+        "skills": ["Python", "Pandas", "Data Visualization"],
+        "career": ["Data Analyst", "Data Scientist"],
+        "difficulty": "Easy",
+        "description": "Analyze personal expenses and generate useful reports."
+    }
+]
+
+
+def recommend_projects(interests, skills, career):
+    recommendations = []
+
+    for project in project_topics:
+        score = 0
+        reasons = []
+
+        # Interest matching
+        interest_matches = set(interests) & set(project["interests"])
+
+        if interest_matches:
+            score += len(interest_matches) * 3
+            reasons.append(
+                "Matches your interests: " +
+                ", ".join(interest_matches)
+            )
+
+        # Skill matching
+        skill_matches = set(skills) & set(project["skills"])
+
+        if skill_matches:
+            score += len(skill_matches) * 2
+            reasons.append(
+                "Uses your skills: " +
+                ", ".join(skill_matches)
+            )
+
+        # Career matching
+        if career in project["career"]:
+            score += 5
+            reasons.append(
+                "Good match for your career goal"
+            )
+
+        recommendations.append({
+            "project": project,
+            "score": score,
+            "reasons": reasons
+        })
+
+    recommendations.sort(
+        key=lambda x: x["score"],
+        reverse=True
+    )
+
+    return recommendations
+
+
+# -------------------------------
+# USER INPUT
+# -------------------------------
+
+print("=" * 55)
+print("      AI PROJECT TOPIC RECOMMENDER")
+print("=" * 55)
+
+print("\nAvailable Interests:")
+print("AI, Data Science, Python, NLP, Business, Education")
+print("Movies, Finance, Computer Vision, Security, Weather")
+
+interest_input = input(
+    "\nEnter your interests (comma separated): "
+)
+
+interests = [
+    x.strip().title()
+    for x in interest_input.split(",")
+]
+
+
+print("\nAvailable Skills:")
+print("Python, Machine Learning, Pandas")
+print("Data Visualization, NLP, Computer Vision, Data Analysis")
+
+skill_input = input(
+    "\nEnter your skills (comma separated): "
+)
+
+skills = [
+    x.strip().title()
+    for x in skill_input.split(",")
+]
+
+
+print("\nCareer Goals:")
+print("1. Data Scientist")
+print("2. AI Engineer")
+print("3. ML Engineer")
+print("4. Data Analyst")
+print("5. Computer Vision Engineer")
+
+career_choice = input(
+    "\nChoose your career goal (1-5): "
+)
+
+career_list = {
+    "1": "Data Scientist",
+    "2": "AI Engineer",
+    "3": "ML Engineer",
+    "4": "Data Analyst",
+    "5": "Computer Vision Engineer"
+}
+
+career = career_list.get(
+    career_choice,
+    "Data Scientist"
+)
+
+
+# -------------------------------
+# RECOMMENDATION
+# -------------------------------
+
+results = recommend_projects(
+    interests,
+    skills,
+    career
+)
+
+
+print("\n")
+print("=" * 55)
+print("        TOP PROJECT RECOMMENDATIONS")
+print("=" * 55)
+
+
+for i, result in enumerate(results[:5], 1):
+
+    project = result["project"]
+
+    print(f"\n{i}. {project['name']}")
+    print("-" * 45)
+    print(f"Match Score : {result['score']}")
+    print(f"Difficulty  : {project['difficulty']}")
+    print(f"Description : {project['description']}")
+
+    if result["reasons"]:
+        print("Why recommended:")
+        for reason in result["reasons"]:
+            print("  ✓", reason)
+    else:
+        print("Why recommended:")
+        print("  ✓ General project suitable for your profile")
+
+
+print("\n" + "=" * 55)
+print("Recommendation completed!")
+print("=" * 55)
